@@ -77,6 +77,16 @@ io.on('connection', (socket) => {
 })
 
 const port = Number(process.env.PORT || 4000)
-await connectDatabase()
-await seedStore()
-server.listen(port, () => console.log(`RideX API listening on http://localhost:${port}`))
+let initializationPromise
+
+export function initializeServer() {
+  initializationPromise ??= connectDatabase().then(() => seedStore())
+  return initializationPromise
+}
+
+export { app }
+
+if (!process.env.VERCEL) {
+  await initializeServer()
+  server.listen(port, () => console.log(`RideX API listening on http://localhost:${port}`))
+}

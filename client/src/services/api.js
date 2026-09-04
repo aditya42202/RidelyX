@@ -1,7 +1,9 @@
+const apiBaseUrl = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '')
+
 const request = async (path, options = {}) => {
   let response
   try {
-    response = await fetch(path, { credentials: 'include', headers: { 'Content-Type': 'application/json', ...options.headers }, ...options })
+    response = await fetch(`${apiBaseUrl}${path}`, { credentials: 'include', headers: { 'Content-Type': 'application/json', ...options.headers }, ...options })
   } catch {
     throw new Error('RideX server se connection nahi ho paaya. Server start karke dobara try karein.')
   }
