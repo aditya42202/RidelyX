@@ -1,0 +1,36 @@
+import mongoose from 'mongoose'
+
+const rideSchema = new mongoose.Schema({
+  customer: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  city: { type: String, enum: ['Lucknow', 'Delhi', 'Bengaluru'], default: 'Delhi' },
+  pickup: { type: String, required: true },
+  pickupLocation: { latitude: Number, longitude: Number },
+  destination: { type: String, required: true },
+  destinationLocation: { latitude: Number, longitude: Number },
+  routeIndex: { type: Number, default: 0 },
+  routeSummary: String,
+  routePolyline: String,
+  category: { type: String, enum: ['Bike', 'Auto', 'Cab', 'Premium', 'Shared', 'XL', 'Rental', 'Airport', 'Parcel'], required: true },
+  distance: Number,
+  duration: Number,
+  baseFare: Number,
+  distanceFare: Number,
+  timeFare: Number,
+  surgeFare: Number,
+  discount: Number,
+  fare: { type: Number, required: true },
+  status: { type: String, enum: ['searching', 'driver_assigned', 'driver_arriving', 'driver_arrived', 'started', 'completed', 'cancelled'], default: 'searching' },
+  driver: { type: mongoose.Schema.Types.ObjectId, ref: 'Driver' },
+  driverLocation: { latitude: Number, longitude: Number, updatedAt: Date },
+  confirmedAt: Date,
+  paymentMethod: { type: String, enum: ['upi', 'card', 'wallet', 'cash', 'ridepass'], default: 'cash' },
+  paymentStatus: { type: String, enum: ['pending', 'success', 'failed', 'refunded'], default: 'pending' },
+  ridePin: String,
+  otp: String,
+  scheduledAt: Date,
+  startedAt: Date,
+  completedAt: Date,
+  cancelledAt: Date,
+}, { timestamps: true })
+
+export default mongoose.model('Ride', rideSchema)

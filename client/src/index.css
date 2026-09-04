@@ -1,0 +1,13 @@
+@import "tailwindcss";
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+:root { font-family: 'Plus Jakarta Sans', sans-serif; color: #192128; background: #f4f7f5; font-synthesis: none; text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; }
+* { box-sizing: border-box; }
+body { margin: 0; min-width: 320px; }
+button, input { font: inherit; }
+h1, h2, h3, h4, strong, button { font-family: 'Outfit', sans-serif; }
+p, label, input, select, textarea, small, span { font-family: 'Plus Jakarta Sans', sans-serif; }
+code, .eyebrow, .section-kicker, .workspace-label, .flow-kicker, .pass-badge, .footer-status { font-family: 'DM Mono', monospace; }
+button { cursor: pointer; border: 0; }
+button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible { outline: 3px solid #238b7d; outline-offset: 3px; }
+button:disabled { cursor: not-allowed; opacity: .65; }
