@@ -63,4 +63,5 @@
 .phone-auth-container .forgot-button { display: block; width: 100%; padding: 8px 0; color: #0a9f90; background: transparent; font-size: 10px; font-weight: 700; border: 0; }
 .phone-auth-container .forgot-button:hover:not(:disabled) { color: #088477; }
 .phone-auth-container .forgot-button:disabled { color: #a8b1bc; cursor: not-allowed; }
+.auth-card > form > .auth-submit { min-height: 40px; }
 
