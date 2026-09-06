@@ -1,4 +1,4 @@
-import 'dotenv/config'
+import dotenv from 'dotenv'
 import express from 'express'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
@@ -22,6 +22,8 @@ import jwt from 'jsonwebtoken'
 import Ride from './models/Ride.js'
 import Driver from './models/Driver.js'
 import mongoose from 'mongoose'
+
+dotenv.config({ path: new URL('../.env.example', import.meta.url) })
 
 const app = express()
 const server = http.createServer(app)
