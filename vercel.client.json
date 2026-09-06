@@ -6,7 +6,7 @@
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "https://ridelyx-api.vercel.app/api/$1"
+      "destination": "https://ridely-x.vercel.app/api/$1"
     },
     {
       "source": "/((?!assets/).*)",

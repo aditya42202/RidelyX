@@ -1,4 +1,4 @@
-import { app, initializeServer } from '../server/index.mjs'
+import { app, initializeServer } from '../index.mjs'
 
 export default async function handler(request, response) {
   const pathname = new URL(request.url || '/', `http://${request.headers.host || 'localhost'}`).pathname
