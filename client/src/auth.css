@@ -26,7 +26,7 @@
 @media (min-width: 821px) { .auth-page { height: 100vh; overflow: hidden; }.auth-story, .auth-form-side { min-height: 0; height: 100vh; }.auth-form-side { overflow-y: auto; } }
 
 .auth-page { grid-template-columns: 48.5% 51.5%; background: #f7fbfc; }
-.otp-link { display: inline-flex; align-items: center; justify-content: center; gap: 8px; align-self: center; padding: 9px 14px; color: #0a9f90; background: #f1fbf9; border: 1px solid #bde9e1; border-radius: 20px; font-size: 10px; font-weight: 700; }.otp-link span { font-size: 15px; line-height: 10px; }.otp-link:hover { background: #e3f7f3; border-color: #79d2c5; }
+.otp-link { display: inline-flex; align-items: center; justify-content: center; gap: 8px; align-self: center; padding: 9px 14px; color: #0a9f90; background: #f1fbf9; border: 1px solid #bde9e1; border-radius: 20px; font-size: 10px; font-weight: 700; }.otp-link span { font-size: 15px; line-height: 10px; }.otp-link:hover { background: #e3f7f3; border-color: #79d2c5; }.mobile-otp-link { display: none; }
 .auth-entry { background: #f7fbfc; }
 .auth-story { padding: 74px 9.5% 34px; color: #12243b; background: radial-gradient(circle at 70% 31%, #fff 0 11%, transparent 11.2%), linear-gradient(145deg, #f5fbff, #eaf7fc 67%, #dff2f7); }
 .auth-back-button { top: 20px; left: 26px; color: #31445b; background: #fff !important; border: 1px solid #dce7ed; border-radius: 12px; padding: 10px 16px; box-shadow: 0 3px 10px #476a7a0d; }
