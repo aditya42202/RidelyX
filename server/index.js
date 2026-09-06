@@ -27,10 +27,11 @@ dotenv.config({ path: new URL('../.env.example', import.meta.url) })
 
 const app = express()
 const server = http.createServer(app)
-const io = new Server(server, { cors: { origin: process.env.CLIENT_URL || 'http://localhost:5173', credentials: true } })
+const clientOrigin = (process.env.CLIENT_URL || 'http://localhost:5173').replace(/\/$/, '')
+const io = new Server(server, { cors: { origin: clientOrigin, credentials: true } })
 app.set('io', io)
 
-app.use(cors({ origin: process.env.CLIENT_URL || 'http://localhost:5173', credentials: true }))
+app.use(cors({ origin: clientOrigin, credentials: true }))
 app.use(express.json())
 app.use(cookieParser())
 app.get('/api/health', (_req, res) => res.json({ service: 'RideX API', status: 'ok', timestamp: new Date().toISOString() }))

@@ -1,11 +1,13 @@
 import mongoose from 'mongoose'
 
 export async function connectDatabase() {
-  if (!process.env.MONGODB_URI) {
-    throw new Error('MongoDB connection failed. Server cannot start: MONGODB_URI is missing.')
+  const connectionString = process.env.MONGODB_URI
+  if (!connectionString || /localhost|127\.0\.0\.1/.test(connectionString)) {
+    console.warn('MONGODB_URI is not configured for production; using the in-memory store.')
+    return false
   }
   try {
-    await mongoose.connect(process.env.MONGODB_URI)
+    await mongoose.connect(connectionString)
     console.log('MongoDB connected')
     return true
   } catch (error) {
