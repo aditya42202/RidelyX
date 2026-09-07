@@ -1,12 +1,26 @@
 const apiBaseUrl = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '')
 
 const request = async (path, options = {}) => {
+  const controller = new AbortController()
+  const timeoutId = setTimeout(() => controller.abort(), 5000)
+
   let response
   try {
-    response = await fetch(`${apiBaseUrl}${path}`, { credentials: 'include', headers: { 'Content-Type': 'application/json', ...options.headers }, ...options })
-  } catch {
+    response = await fetch(`${apiBaseUrl}${path}`, {
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json', ...options.headers },
+      signal: controller.signal,
+      ...options,
+    })
+  } catch (error) {
+    if (error?.name === 'AbortError') {
+      throw new Error('RideX server ka response time out ho gaya. Server chalu hai kya?')
+    }
     throw new Error('RideX server se connection nahi ho paaya. Server start karke dobara try karein.')
+  } finally {
+    clearTimeout(timeoutId)
   }
+
   const data = await response.json().catch(() => ({}))
   if (!response.ok) {
     const fallback = response.status >= 500

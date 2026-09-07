@@ -117,29 +117,37 @@ function App() {
   useEffect(() => {
     let cancelled = false;
     const restoreSession = async () => {
-      for (let attempt = 0; attempt < 3 && !cancelled; attempt += 1) {
+      try {
+        const { user: currentUser } = await api.me();
+        if (cancelled) return;
+
+        setUser(currentUser);
+        setRole(currentUser.role === "partner" ? "Partner" : currentUser.role === "admin" ? "Admin" : "Customer");
+
         try {
-          const { user: currentUser } = await api.me();
-          if (cancelled) return;
-          setUser(currentUser);
-          setRole(currentUser.role === "partner" ? "Partner" : currentUser.role === "admin" ? "Admin" : "Customer");
-          try {
-            const rides = await api.rides();
-            const activeRide = rides.find((ride) => ["searching", "driver_assigned", "driver_arriving", "driver_arrived", "started"].includes(ride.status));
-            if (activeRide) {
-              setCurrentRide(activeRide);
-              setBookingStage(activeRide.status === "searching" ? "matching" : "tracking");
-            }
-          } catch (error) { void error }
-          break;
-        } catch {
-          if (attempt < 2) await new Promise((resolve) => setTimeout(resolve, 250));
+          const rides = await api.rides();
+          const activeRide = rides.find((ride) => ["searching", "driver_assigned", "driver_arriving", "driver_arrived", "started"].includes(ride.status));
+          if (activeRide) {
+            setCurrentRide(activeRide);
+            setBookingStage(activeRide.status === "searching" ? "matching" : "tracking");
+          }
+        } catch (error) {
+          void error;
         }
+      } catch {
+        if (!cancelled) {
+          setUser(null);
+          setRole("Customer");
+        }
+      } finally {
+        if (!cancelled) setAuthChecked(true);
       }
-      if (!cancelled) setAuthChecked(true);
     };
+
     restoreSession();
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   const handleAuthenticated = (authenticatedUser) => {
