@@ -27,7 +27,10 @@ dotenv.config({ path: new URL('../.env', import.meta.url) })
 
 const app = express()
 const server = http.createServer(app)
-const clientOrigin = (process.env.CLIENT_URL || 'http://localhost:5173').replace(/\/$/, '')
+const clientOrigin = (
+  process.env.CLIENT_URL ||
+  (process.env.NODE_ENV === 'production' ? 'https://ridelyx-client.vercel.app' : 'http://localhost:5173')
+).replace(/\/$/, '')
 const io = new Server(server, { cors: { origin: clientOrigin, credentials: true } })
 app.set('io', io)
 

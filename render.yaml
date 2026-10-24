@@ -10,8 +10,14 @@ services:
       - key: NODE_ENV
         value: production
       - key: CLIENT_URL
-        sync: false
+        value: https://ridelyx-client.vercel.app
       - key: MONGODB_URI
         sync: false
       - key: JWT_SECRET
         generateValue: true
+      - key: GOOGLE_REDIRECT_URI
+        value: https://ridelyx.onrender.com/api/auth/google/callback
+      - key: GOOGLE_CLIENT_ID
+        sync: false
+      - key: GOOGLE_CLIENT_SECRET
+        sync: false

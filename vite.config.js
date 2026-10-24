@@ -2,6 +2,7 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import dotenv from 'dotenv'
+import process from 'node:process'
 import { resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -11,7 +12,7 @@ const env = dotenv.config({ path: envFile }).parsed || {}
 const clientEnv = Object.fromEntries(
   Object.entries(env)
     .filter(([key]) => key.startsWith('VITE_'))
-    .map(([key, value]) => [`import.meta.env.${key}`, JSON.stringify(value)])
+    .map(([key, value]) => [`import.meta.env.${key}`, JSON.stringify(process.env[key] ?? value)])
 )
 
 export default defineConfig({

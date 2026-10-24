@@ -9,6 +9,10 @@ import { requireAuth, signToken } from '../middleware/auth.js'
 import { store } from '../store.js'
 
 const router = express.Router()
+const clientUrl = (
+  process.env.CLIENT_URL ||
+  (process.env.NODE_ENV === 'production' ? 'https://ridelyx-client.vercel.app' : 'http://localhost:5173')
+).replace(/\/$/, '')
 
 const publicUser = (user) => ({
   id: user._id,
@@ -211,7 +215,7 @@ router.get('/google/callback', async (req, res, next) => {
     })
 
     res.clearCookie('ridex_oauth_state').redirect(
-      `${process.env.CLIENT_URL || 'http://localhost:5173'}/?otp_email=${encodeURIComponent(normalizedEmail)}`
+      `${clientUrl}/?otp_email=${encodeURIComponent(normalizedEmail)}`
     )
   } catch (error) {
     next(error)
@@ -541,7 +545,7 @@ router.post('/forgot-password', async (req, res, next) => {
 
       const transport = otpTransport()
       if (transport) {
-        const resetUrl = `${process.env.CLIENT_URL || 'http://localhost:5173'}/?reset_token=${token}`
+        const resetUrl = `${clientUrl}/?reset_token=${token}`
         await transport.sendMail({
           from: process.env.SMTP_FROM || process.env.SMTP_USER,
           to: email,

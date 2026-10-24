@@ -35,19 +35,16 @@ The client runs on `http://localhost:5173` and the server runs on `http://localh
 
 ## Deploy to Vercel
 
-Deploy from the repository root so Vercel can build the client and discover `api/index.js`. The root `vercel.json` sends `/api/*` requests to the Express API and routes other paths to the client.
+Deploy from the repository root so Vercel can build the client. The `VITE_API_URL` setting points the frontend's API and Socket.IO traffic at the separate Render service.
 
-Set these environment variables in the Vercel project:
+Set this environment variable in the Vercel project:
 
-- `CLIENT_URL`: the exact public origin of the client, such as `https://ridelyx-client.vercel.app`.
-- `MONGODB_URI`: the production MongoDB connection string.
+- `VITE_API_URL=https://ridelyx.onrender.com` so the deployed client sends API and Socket.IO requests to Render.
 
-`VITE_API_URL` is empty by default, so the frontend uses the same origin for API and Socket.IO requests. Set it to a separate backend's public origin only if the API is deployed as a different project. Redeploy after changing the configuration or environment variables.
-
-The API requires a reachable `MONGODB_URI` in Vercel and returns `503` with a configuration message if it is missing; it does not fall back to non-persistent in-memory storage in production. Keep database credentials out of `.env.example` and source control.
+The Vercel API is not used when `VITE_API_URL` points to Render. Redeploy the frontend after updating this setting.
 
 ## Deploy the API to Render
 
 Use the repository's `render.yaml` Blueprint, or configure the Render web service with root directory `server`, build command `npm install && npm run build`, and start command `npm start`. The server package's build script checks the Node entrypoints; the API does not need a separate compilation step.
 
-Set `CLIENT_URL` to the deployed frontend's exact origin and `MONGODB_URI` to a reachable production MongoDB connection. Generate a strong `JWT_SECRET` in Render. If the frontend is hosted separately, set its `VITE_API_URL` to the Render service's public URL and redeploy the frontend so API and Socket.IO requests reach the backend.
+The Render Blueprint sets `CLIENT_URL` to `https://ridelyx-client.vercel.app` and the Google OAuth callback to `https://ridelyx.onrender.com/api/auth/google/callback`. Set `MONGODB_URI` to a reachable production MongoDB connection and generate a strong `JWT_SECRET` in Render. To enable Google sign-in, set `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` in Render. The frontend's `VITE_API_URL` should be `https://ridelyx.onrender.com`.
