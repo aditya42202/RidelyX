@@ -45,3 +45,9 @@ Set these environment variables in the Vercel project:
 `VITE_API_URL` is empty by default, so the frontend uses the same origin for API and Socket.IO requests. Set it to a separate backend's public origin only if the API is deployed as a different project. Redeploy after changing the configuration or environment variables.
 
 The API requires a reachable `MONGODB_URI` in Vercel and returns `503` with a configuration message if it is missing; it does not fall back to non-persistent in-memory storage in production. Keep database credentials out of `.env.example` and source control.
+
+## Deploy the API to Render
+
+Use the repository's `render.yaml` Blueprint, or configure the Render web service with root directory `server`, build command `npm install && npm run build`, and start command `npm start`. The server package's build script checks the Node entrypoints; the API does not need a separate compilation step.
+
+Set `CLIENT_URL` to the deployed frontend's exact origin and `MONGODB_URI` to a reachable production MongoDB connection. Generate a strong `JWT_SECRET` in Render. If the frontend is hosted separately, set its `VITE_API_URL` to the Render service's public URL and redeploy the frontend so API and Socket.IO requests reach the backend.
