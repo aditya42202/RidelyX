@@ -23,7 +23,7 @@ import Ride from './models/Ride.js'
 import Driver from './models/Driver.js'
 import mongoose from 'mongoose'
 
-dotenv.config({ path: new URL('../.env.example', import.meta.url) })
+dotenv.config({ path: new URL('../.env', import.meta.url) })
 
 const app = express()
 const server = http.createServer(app)
@@ -34,6 +34,15 @@ app.set('io', io)
 app.use(cors({ origin: clientOrigin, credentials: true }))
 app.use(express.json())
 app.use(cookieParser())
+app.use(async (req, res, next) => {
+  if (req.method === 'OPTIONS' || req.path === '/api/health') return next()
+  try {
+    await initializeServer()
+    next()
+  } catch (error) {
+    next(error)
+  }
+})
 app.get('/api/health', (_req, res) => res.json({ service: 'RideX API', status: 'ok', timestamp: new Date().toISOString() }))
 app.use('/api/auth', authRoutes)
 app.use('/api/rides', rideRoutes)
@@ -47,7 +56,15 @@ app.use('/api/notifications', notificationRoutes)
 app.use('/api/requests', requestRoutes)
 app.use('/api/pass', passRoutes)
 app.use('/api/rides', chatRoutes)
-app.use((error, _req, res, next) => { console.error(error); void next; res.status(500).json({ message: 'Something went wrong on the RideX server' }) })
+app.use((error, _req, res, next) => {
+  console.error(error)
+  void next
+  const statusCode = error.statusCode === 503 ? 503 : 500
+  const message = statusCode === 503
+    ? error.message
+    : 'Something went wrong on the RideX server'
+  res.status(statusCode).json({ message })
+})
 
 io.use((socket, next) => {
   try {
